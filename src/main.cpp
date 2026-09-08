@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
    else {
       // If 3 args not input
 	   cout << "Three required arguments were not entered.\n";
-	   cout << "Arugments expected: ./a.out resource.txt reservation\n";
+	   cout << "Arugments expected: ./a.out resource.txt reservation.txt\n";
 	   return 1;
 
    }
