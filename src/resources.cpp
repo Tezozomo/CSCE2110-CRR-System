@@ -22,3 +22,20 @@ Resources::Resources(string id, string name, string type, string availability) {
    rAvailability = availability;
 
 }
+//accessors //get resources data for output
+string Resources::getID() {
+   return rID;
+
+}
+string ResourcesL::getName() {
+   return rName;
+
+}
+string Resources::getType() {
+   return rType;
+
+}
+string rAvailability::getAvailability() {
+   return rAvailability;
+
+}

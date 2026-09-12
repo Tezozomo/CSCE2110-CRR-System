@@ -1,6 +1,7 @@
-/* 
+/*[UPDATE: does not run right now,
+    applying abstraction changing the file upload in respective class] 
 
-   //current
+   //current[UPDATE: does not run]
    compile: g++ main.cpp resources.cpp
    execute: ./a.out ../data/resources.txt
 */
@@ -24,13 +25,13 @@ void banner() {
 
 int main(int argc, char* argv[]) {
    banner();      //display intro
-   //argument count need 3
+   //argument count need 3 for final product
    if(argc == 2) {      //index 0-execute, 1-resource, 2-reservation
       ifstream resourceF(argv[1]);     //input file stream resources.txt
-      //ifstream reservF(argc[2]);  //reservations.txt
+      // ifstream reservF(argc[2]);  //reservations.txt
       
-      //check if both files opened
-      if(!resourceF.is_open()) {
+
+      if(!resourceF.is_open()) {             //check both files opened
          cout << "Error:: File Not Open -" << argv[1] << endl;
          return 1;      //failure exit 
       
@@ -40,10 +41,6 @@ int main(int argc, char* argv[]) {
       //    return 1;
       
       // }
-
-      // files clear now stream/parse file
-      vector<Resources> resources;  //vector to hold resource info
-      string line, id, name, type, availability;
 
       while(getline(resourceF, line)) {      //until last line of file
          stringstream ss(line);     //one line at a time
