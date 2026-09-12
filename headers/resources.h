@@ -20,8 +20,8 @@ class Resources {
       string getAvailability();
 
       //resource manage part
-      void display();
-      //void sort(pass vector) fx
+      void displayResources();
+      bool sortFile(const string& resourceFile);      //pass file by reference
 
    private:
       string rID;
