@@ -20,7 +20,7 @@ class Resources {
       string getAvailability();
 
       //resource manage part
-      void displayResources();
+      void displayResources();                        //print list
       bool sortFile(const string& resourceFile);      //pass file by reference
 
    private:
