@@ -8,6 +8,7 @@
 using namespace std;
 
 void banner();
+void menu();
 
 int main(int argc, char* argv[]) {
    banner();                                    //display intro
@@ -27,7 +28,10 @@ int main(int argc, char* argv[]) {
 	   return 1;
 
    }
-   
+
+   menu();                                      //load files successful than display menu
+   resources.displayResources();                //no menu yet testing print
+
    return 0;
 
 }
@@ -46,3 +50,21 @@ void banner() {
         << "+--------------------------------------------------------------+\n\n\n";
 
 };
+
+void menu() {
+      cout << "+--------------------------------------------------------------+\n"
+           << "|               CAMPUS RESOURCE RESERVATION SYSTEM             |\n"
+           << "+--------------------------------------------------------------+\n"
+           << "|   1 - Display Resource & Availability                        |\n"
+           << "|   2 - Create Reservation                                     |\n"
+           << "|   3 - Cancel Reservation                                     |\n"
+           << "|   4 - Display Reservation Information                        |\n"
+           << "|   5 -                    |\n"
+           << "|                    |\n"
+           << "|                        |\n"
+           << "|                        |\n"
+           << "|                        |\n"
+           << "|                        |\n"
+           << "+--------------------------------------------------------------+\n\n";
+
+}

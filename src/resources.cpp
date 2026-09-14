@@ -61,3 +61,18 @@ string Resources::getAvailability() {
    return rAvailability;
 
 }
+//print
+void Resources::displayResources() {
+
+   cout << "Testing output\n";
+   for(int i = 0; i < resources.size(); i++) {                              //display all items
+      cout << "Item ID: " << resources[i].getID() << endl;
+      cout << "Item Name: " << resources[i].getName() << endl;
+      cout << "Item Type: " << resources[i].getType() << endl;
+      cout << "Item Availability " << resources[i].getAvailability() << endl << endl;
+
+   }
+
+
+
+}
