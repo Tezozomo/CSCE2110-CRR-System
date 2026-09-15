@@ -7,9 +7,10 @@
 #include"../headers/libraries.h"                //
 using namespace std;
 
+//user-defined fx's
 void banner();
 void menu();
-void resourceManagement();
+void resourceManagement(Resources &resources);  //declare another object and pass by reference
 void reservationManagement();
 void waitingList();
 void cancellationHistory();
@@ -40,15 +41,17 @@ int main(int argc, char* argv[]) {
    
       switch(option) {
          case 1:
-            resourceManagement();
+            resourceManagement(resources);         //passing object for access
             break;
          case 2:
-            reservationManagement();
+            // reservationManagement();
             break;
          case 3:
-            waitingList();
+            // waitingList();
+            break;
          case 4:
-            cancellationHistory();
+            // cancellationHistory();
+            break;
          case 0:
             break;
          default:
@@ -74,7 +77,7 @@ void banner() {
         << "|              Trevor Sipes trevorsipes@my.unt.edu             |\n"
         << "+--------------------------------------------------------------+\n\n\n";
 
-};
+}
 //menu CRRS category
 void menu() {
    cout << "+--------------------------------------------------------------+\n"
@@ -89,8 +92,29 @@ void menu() {
 
 }
 
-void resourceManagement() {
+void resourceManagement(Resources &resources) {
    int option;
+
+   do {
+      cout << "+--------------------------------------------------------------+\n"
+           << "|                    Resource Management                       |\n"
+           << "+--------------------------------------------------------------+\n"
+           << "|   1 - Print Resource & Availability                          |\n"
+           << "|   0 - Exit Menu                                              |\n"
+           << "+--------------------------------------------------------------+\n\n";
+      cout << "Select option: ";
+      cin >> option; cout << endl;
+
+      switch (option) {
+         case 1:
+            resources.displayResources();
+         case 0:
+            break;
+         default:
+            cout << "Option not available";
+
+      }
+   } while (option != 0);
 
 }
 

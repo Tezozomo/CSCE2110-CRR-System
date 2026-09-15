@@ -24,10 +24,10 @@ Resources::Resources(string id, string name, string type, string availability) {
 }
 //open sort file
 bool Resources::sortFile(const string& resourceFile) {
-   ifstream resourceF(resourceFile);
-   string line, id, name, type, availability;
+   ifstream resourceF(resourceFile);                                        //declare input stream
+   string line, id, name, type, availability;                               //variables for resources
 
-   if(!resourceF.is_open()) {
+   if(!resourceF.is_open()) {                                               
       return false;                                                         //Error: failed to open
 
    }
@@ -63,7 +63,6 @@ string Resources::getAvailability() {
 }
 //print
 void Resources::displayResources() {
-
    cout << "Testing output\n";
    for(int i = 0; i < resources.size(); i++) {                              //display all items
       cout << "Item ID: " << resources[i].getID() << endl;
@@ -72,7 +71,4 @@ void Resources::displayResources() {
       cout << "Item Availability " << resources[i].getAvailability() << endl << endl;
 
    }
-
-
-
 }
