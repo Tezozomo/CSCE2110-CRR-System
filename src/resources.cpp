@@ -45,30 +45,81 @@ bool Resources::sortFile(const string& resourceFile) {
 
 }
 //accessors //get resources data for output
-string Resources::getID() {
+string Resources::getID() const {
    return rID;
 
 }
-string Resources::getName() {
+string Resources::getName() const {
    return rName;
 
 }
-string Resources::getType() {
+string Resources::getType() const {
    return rType;
 
 }
-string Resources::getAvailability() {
+string Resources::getAvailability() const {
    return rAvailability;
 
 }
+string Resources::getAvailability(const string& id) const {
+   int index = findIndex(id);
+   return index < 0 ? "" : resources[index].getAvailability();
+}
 //print
 void Resources::displayResources() {
-   cout << "Testing output\n";
-   for(int i = 0; i < resources.size(); i++) {                              //display all items
-      cout << "Item ID: " << resources[i].getID() << endl;
-      cout << "Item Name: " << resources[i].getName() << endl;
-      cout << "Item Type: " << resources[i].getType() << endl;
-      cout << "Item Availability " << resources[i].getAvailability() << endl << endl;
-
+   cout << left << setw(8) << "ID" << setw(24) << "Name" << setw(24)
+        << "Type" << "Availability\n";
+   cout << string(75, '-') << '\n';
+   for(const Resources& resource : resources) {
+      cout << left << setw(8) << resource.getID() << setw(24) << resource.getName()
+           << setw(24) << resource.getType() << resource.getAvailability() << '\n';
    }
+   }
+
+int Resources::findIndex(const string& id) const {
+   for(size_t i = 0; i < resources.size(); ++i) {
+      if(resources[i].getID() == id) return static_cast<int>(i);
+   }
+   return -1;
+}
+
+bool Resources::setAvailability(const string& id, const string& availability) {
+   int index = findIndex(id);
+   if(index < 0) return false;
+   resources[index].rAvailability = availability;
+   return true;
+}
+
+bool Resources::displayResource(const string& id) const {
+   int index = findIndex(id);
+   if(index < 0) return false;
+   cout << left << setw(8) << "ID" << setw(24) << "Name" << setw(24)
+        << "Type" << "Availability\n";
+   cout << left << setw(8) << resources[index].getID() << setw(24)
+        << resources[index].getName() << setw(24) << resources[index].getType()
+        << resources[index].getAvailability() << '\n';
+   return true;
+}
+
+void Resources::sortResources(const string& criterion) {
+   vector<Resources> sorted = resources;
+   auto compare = [&criterion](const Resources& left, const Resources& right) {
+      if(criterion == "name") return left.getName() < right.getName();
+      if(criterion == "type") return left.getType() < right.getType();
+      return left.getID() < right.getID();
+   };
+   for(size_t width = 1; width < sorted.size(); width *= 2) {
+      for(size_t begin = 0; begin < sorted.size(); begin += 2 * width) {
+         size_t middle = min(begin + width, sorted.size());
+         size_t end = min(begin + 2 * width, sorted.size());
+         vector<Resources> merged;
+         size_t left = begin, right = middle;
+         while(left < middle && right < end)
+            merged.push_back(compare(sorted[left], sorted[right]) ? sorted[left++] : sorted[right++]);
+         while(left < middle) merged.push_back(sorted[left++]);
+         while(right < end) merged.push_back(sorted[right++]);
+         copy(merged.begin(), merged.end(), sorted.begin() + begin);
+      }
+   }
+   resources = sorted;
 }

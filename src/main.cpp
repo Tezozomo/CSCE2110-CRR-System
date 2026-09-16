@@ -4,28 +4,83 @@
    compile: g++ main.cpp resources.cpp
    execute: ./a.out ../data/resources.txt
 */
-#include"../headers/libraries.h"                //
+#include "../headers/libraries.h"
+#include "../headers/reservations.h"
 using namespace std;
 
 //user-defined fx's
 void banner();
-void menu();
-void resourceManagement(Resources &resources);  //declare another object and pass by reference
-void reservationManagement();
-void waitingList();
-void cancellationHistory();
+string prompt(const string& label);
+void printMenu();
 
 int main(int argc, char* argv[]) {
    banner();                                    //display intro
    Resources resources;                         //create object of type Resources
-   int option = 0;                                  //for menu
-   //argument count need 3 for final product
-   if(argc == 2) {                              //index 0-execute, 1-resources.txt, 2-reservation.txt
+   int option = 0;
+   if(argc == 3) {
       if(!resources.sortFile(argv[1])) {        //check file open and sort
          cout << "Error:: File Not Open -" << argv[1] << endl;
          return 1;                              //failure exit 
       
       }
+      ReservationManager manager(resources);
+      if(!manager.loadReservations(argv[2])) {
+         cout << "Error:: File Not Open -" << argv[2] << endl;
+         return 1;
+      }
+
+      do {
+         printMenu();
+         string input = prompt("Select an option: ");
+         stringstream optionInput(input);
+         if(!(optionInput >> option)) option = -1;
+         switch(option) {
+            case 1:
+               resources.displayResources();
+               break;
+            case 2: {
+               Reservation reservation(prompt("Reservation ID: "), prompt("Student ID: "),
+                  prompt("Student Name: "), prompt("Resource ID: "), prompt("Reservation Date: "));
+               if(resources.findIndex(reservation.getResourceID()) < 0) cout << "Invalid resource ID.\n";
+               else if(resources.getAvailability(reservation.getResourceID()) != "Available") manager.addToWaitingList(reservation);
+               else if(manager.createReservation(reservation)) cout << "Reservation created successfully.\n";
+               else cout << "Duplicate reservation ID.\n";
+               break;
+            }
+            case 3:
+               if(manager.cancelReservation(prompt("Reservation ID: "))) cout << "Reservation cancelled.\n";
+               else cout << "Reservation not found.\n";
+               break;
+            case 4:
+               manager.displayWaitingLists();
+               break;
+            case 5:
+               if(manager.undoCancellation()) cout << "Reservation restored successfully.\n";
+               else cout << "No cancellation can be undone.\n";
+               break;
+            case 6:
+               if(!resources.displayResource(prompt("Resource ID: ")))
+                  cout << "Resource not found.\n";
+               break;
+            case 7:
+               manager.searchReservations(prompt("Search ID, student, or resource: "));
+               break;
+            case 8: {
+               string criterion = prompt("Sort by id, name, or type: ");
+               resources.sortResources(criterion);
+               resources.displayResources();
+               break;
+            }
+            case 9:
+               manager.generateReport();
+               break;
+            case 0:
+               break;
+            default:
+               cout << "Option not available.\n";
+         }
+      } while(option != 0);
+      return 0;
    }
    else {                                       //Invalid amount of inputs need three
 	   cout << "Three required arguments were not entered.\n";
@@ -33,35 +88,6 @@ int main(int argc, char* argv[]) {
 	   return 1;
 
    }
-   //files accepted start menu
-   do {
-      menu();                                      //load files successful than display menu
-      cout << endl << "Select an option: ";
-      cin >> option;
-   
-      switch(option) {
-         case 1:
-            resourceManagement(resources);         //passing object for access
-            break;
-         case 2:
-            // reservationManagement();
-            break;
-         case 3:
-            // waitingList();
-            break;
-         case 4:
-            // cancellationHistory();
-            break;
-         case 0:
-            break;
-         default:
-            cout << "Option not available\n";
-
-      }
-   } while(option != 0);
-
-   return 0;
-
 }
 
 void banner() {
@@ -78,57 +104,21 @@ void banner() {
         << "+--------------------------------------------------------------+\n\n\n";
 
 }
-//menu CRRS category
-void menu() {
+string prompt(const string& label) {
+   cout << label;
+   string value;
+   getline(cin >> ws, value);
+   return value;
+}
+
+void printMenu() {
    cout << "+--------------------------------------------------------------+\n"
-        << "|                  Student Resource Center                     |\n"
+        << "|           Campus Resource Reservation System                 |\n"
         << "+--------------------------------------------------------------+\n"
-        << "|   1 - Resource Management                                    |\n"
-        << "|   2 - Reservation Management                                 |\n"
-        << "|   3 - Waiting List Management                                |\n"
-        << "|   4 - Cancellation History                                   |\n"
-        << "|   0 - Exit Menu                                              |\n"
+      << "|   1 - View Resources        6 - Search Resource               |\n"
+      << "|   2 - Create Reservation    7 - Search Reservations            |\n"
+      << "|   3 - Cancel Reservation    8 - Sort Resources                |\n"
+      << "|   4 - View Waiting Lists    9 - Generate Report               |\n"
+      << "|   5 - Undo Cancellation     0 - Exit                          |\n"
         << "+--------------------------------------------------------------+\n\n";
-
-}
-
-void resourceManagement(Resources &resources) {
-   int option;
-
-   do {
-      cout << "+--------------------------------------------------------------+\n"
-           << "|                    Resource Management                       |\n"
-           << "+--------------------------------------------------------------+\n"
-           << "|   1 - Print Resource & Availability                          |\n"
-           << "|   0 - Exit Menu                                              |\n"
-           << "+--------------------------------------------------------------+\n\n";
-      cout << "Select option: ";
-      cin >> option; cout << endl;
-
-      switch (option) {
-         case 1:
-            resources.displayResources();
-         case 0:
-            break;
-         default:
-            cout << "Option not available";
-
-      }
-   } while (option != 0);
-
-}
-
-void reservationManagement() {
-   int option;
-
-}
-
-void waitingList() {
-   int option;
-
-}
-
-void cancellationHistory() {
-   int option;
-
 }

@@ -5,7 +5,13 @@
 #pragma once            //short hand header method
 #include<iostream>
 #include<string>
-#include<vector>        //use for resources part
-#include<fstream>       //open/close file
-#include<sstream>       //data input per line
-#include"resources.h"   //header for resources part
+#include<vector>
+#include<fstream>
+#include<sstream>
+#include<algorithm>
+#include<iomanip>
+#include<limits>
+#include<map>
+#include<queue>
+#include<stack>
+#include"resources.h"
