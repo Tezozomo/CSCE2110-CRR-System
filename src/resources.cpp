@@ -1,12 +1,7 @@
-/* store resources
-   function definitions
-
-*/
-
-#include"../headers/resources.h"
+#include "../headers/resources.h"
 using namespace std;
 
-//default constructor
+// create empty resource
 Resources::Resources() {
    rID = "";
    rName = "";
@@ -14,7 +9,7 @@ Resources::Resources() {
    rAvailability = "";
 
 }
-//parameterized constructor
+// create resource entry
 Resources::Resources(string id, string name, string type, string availability) {
    rID = id;
    rName = name;
@@ -22,29 +17,29 @@ Resources::Resources(string id, string name, string type, string availability) {
    rAvailability = availability;
 
 }
-//open sort file
+// load resource file
 bool Resources::sortFile(const string& resourceFile) {
-   ifstream resourceF(resourceFile);                                        //declare input stream
-   string line, id, name, type, availability;                               //variables for resources
+   ifstream resourceF(resourceFile);
+   string line, id, name, type, availability;
 
    if(!resourceF.is_open()) {                                               
-      return false;                                                         //Error: failed to open
+      return false;
 
    }
 
-   while(getline(resourceF, line)) {                                        //until last line of file
-         stringstream ss(line);                                             //one line at a time
+   while(getline(resourceF, line)) {
+         stringstream ss(line);
          if(getline(ss, id, '|') && getline(ss, name, '|' ) && getline(ss, type, '|') && getline(ss, availability, '|')) {
-            resources.emplace_back(id, name, type, availability);           //construct obj in vector //emplace bc raw arguments 
+            resources.emplace_back(id, name, type, availability);
 
          }
    }
 
-   resourceF.close();                                                       //got what we need close
-   return true;                                                             //open success
+   resourceF.close();
+   return true;
 
 }
-//accessors //get resources data for output
+// access resource id
 string Resources::getID() const {
    return rID;
 
@@ -65,7 +60,7 @@ string Resources::getAvailability(const string& id) const {
    int index = findIndex(id);
    return index < 0 ? "" : resources[index].getAvailability();
 }
-//print
+// display all resources
 void Resources::displayResources() {
    cout << left << setw(8) << "ID" << setw(24) << "Name" << setw(24)
         << "Type" << "Availability\n";
@@ -73,9 +68,10 @@ void Resources::displayResources() {
    for(const Resources& resource : resources) {
       cout << left << setw(8) << resource.getID() << setw(24) << resource.getName()
            << setw(24) << resource.getType() << resource.getAvailability() << '\n';
-   }
+}
    }
 
+// find resource index
 int Resources::findIndex(const string& id) const {
    for(size_t i = 0; i < resources.size(); ++i) {
       if(resources[i].getID() == id) return static_cast<int>(i);
@@ -83,6 +79,7 @@ int Resources::findIndex(const string& id) const {
    return -1;
 }
 
+// update resource status
 bool Resources::setAvailability(const string& id, const string& availability) {
    int index = findIndex(id);
    if(index < 0) return false;
@@ -90,6 +87,7 @@ bool Resources::setAvailability(const string& id, const string& availability) {
    return true;
 }
 
+// display one resource
 bool Resources::displayResource(const string& id) const {
    int index = findIndex(id);
    if(index < 0) return false;
@@ -101,6 +99,7 @@ bool Resources::displayResource(const string& id) const {
    return true;
 }
 
+// sort resource list
 void Resources::sortResources(const string& criterion) {
    vector<Resources> sorted = resources;
    auto compare = [&criterion](const Resources& left, const Resources& right) {

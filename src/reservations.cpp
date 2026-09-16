@@ -1,7 +1,9 @@
 #include "../headers/reservations.h"
 
+// create empty reservation
 Reservation::Reservation() = default;
 
+// create reservation entry
 Reservation::Reservation(const string& id, const string& studentIDValue,
 								 const string& studentNameValue, const string& resourceIDValue,
 								 const string& date)
@@ -15,11 +17,13 @@ string Reservation::getResourceID() const { return resourceID; }
 string Reservation::getDate() const { return reservationDate; }
 
 void Reservation::display() const {
+	// print reservation row
 	cout << left << setw(8) << reservationID << setw(12) << studentID
 		  << setw(22) << studentName << setw(12) << resourceID << reservationDate << '\n';
 }
 
 ReservationManager::ReservationManager(Resources& resourceList)
+	// initialize manager state
 	: resources(resourceList), head(nullptr) {}
 
 ReservationManager::~ReservationManager() { clearReservations(); }
@@ -44,6 +48,7 @@ ReservationManager::ReservationNode* ReservationManager::findNode(const string& 
 }
 
 bool ReservationManager::loadReservations(const string& reservationFile) {
+	// load reservation file
 	ifstream input(reservationFile);
 	if(!input.is_open()) return false;
 
@@ -61,6 +66,7 @@ bool ReservationManager::loadReservations(const string& reservationFile) {
 }
 
 bool ReservationManager::createReservation(const Reservation& reservation) {
+	// add active reservation
 	if(reservationIDExists(reservation.getID()) ||
 		resources.findIndex(reservation.getResourceID()) < 0) return false;
 	head = new ReservationNode(reservation, head);
@@ -69,6 +75,7 @@ bool ReservationManager::createReservation(const Reservation& reservation) {
 }
 
 bool ReservationManager::cancelReservation(const string& reservationID) {
+	// cancel active reservation
 	ReservationNode* current = head;
 	ReservationNode* previous = nullptr;
 	while(current != nullptr && current->value.getID() != reservationID) {
@@ -95,6 +102,7 @@ bool ReservationManager::cancelReservation(const string& reservationID) {
 }
 
 bool ReservationManager::undoCancellation() {
+	// restore last cancellation
 	if(cancellationHistory.empty()) return false;
 	Reservation restored = cancellationHistory.top();
 	if(reservationIDExists(restored.getID()) ||
@@ -105,6 +113,7 @@ bool ReservationManager::undoCancellation() {
 }
 
 void ReservationManager::displayReservations() const {
+	// display active reservations
 	if(head == nullptr) {
 		cout << "No active reservations.\n";
 		return;
@@ -117,6 +126,7 @@ void ReservationManager::displayReservations() const {
 }
 
 void ReservationManager::searchReservations(const string& query) const {
+	// search active reservations
 	bool found = false;
 	for(ReservationNode* current = head; current != nullptr; current = current->next) {
 		const Reservation& reservation = current->value;
@@ -134,6 +144,7 @@ void ReservationManager::searchReservations(const string& query) const {
 }
 
 void ReservationManager::addToWaitingList(const Reservation& request) {
+	// queue waiting request
 	if(reservationIDExists(request.getID())) {
 		cout << "Duplicate reservation ID.\n";
 		return;
@@ -157,6 +168,7 @@ void ReservationManager::addToWaitingList(const Reservation& request) {
 }
 
 void ReservationManager::displayWaitingLists() const {
+	// display waiting queues
 	bool found = false;
 	for(const auto& entry : waitingLists) {
 		if(entry.second.empty()) continue;
@@ -173,6 +185,7 @@ void ReservationManager::displayWaitingLists() const {
 }
 
 void ReservationManager::generateReport() const {
+	// generate usage report
 	map<string, int> counts;
 	int active = 0;
 	for(ReservationNode* current = head; current != nullptr; current = current->next) {
