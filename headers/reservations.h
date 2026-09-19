@@ -1,7 +1,8 @@
 #ifndef RESERVATIONS_H
 #define RESERVATIONS_H
 
-#include "resources.h"
+#include "libraries.h"
+using namespace std;
 
 class Reservation {
 public:
@@ -26,39 +27,6 @@ private:
 
 struct WaitingRequest {
 	Reservation reservation;
-};
-
-class ReservationManager {
-public:
-	ReservationManager(Resources& resources);
-	~ReservationManager();
-
-	bool loadReservations(const string& reservationFile);
-	bool createReservation(const Reservation& reservation);
-	bool cancelReservation(const string& reservationID);
-	bool undoCancellation();
-	void displayReservations() const;
-	void searchReservations(const string& query) const;
-	void addToWaitingList(const Reservation& request);
-	void displayWaitingLists() const;
-	void generateReport() const;
-
-private:
-	struct ReservationNode {
-		Reservation value;
-		ReservationNode* next;
-		ReservationNode(const Reservation& reservation, ReservationNode* nextNode = nullptr)
-			: value(reservation), next(nextNode) {}
-	};
-
-	Resources& resources;
-	ReservationNode* head;
-	map<string, queue<WaitingRequest>> waitingLists;
-	stack<Reservation> cancellationHistory;
-
-	bool reservationIDExists(const string& id) const;
-	ReservationNode* findNode(const string& id) const;
-	void clearReservations();
 };
 
 #endif

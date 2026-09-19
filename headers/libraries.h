@@ -1,4 +1,4 @@
-/* This file holds STL libraries and headers for the project
+/* This file holds STL libraries for the project
 
 */
 
@@ -14,4 +14,3 @@
 #include<map>
 #include<queue>
 #include<stack>
-#include"resources.h"
