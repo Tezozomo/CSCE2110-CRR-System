@@ -2,8 +2,9 @@
    Project Milestone 1
 
    [UPDATE: This project compiles and executes]
-   compile: g++ *.cpp
-   execute: ./a.out ../data/*.txt
+   compile & execute: make run
+   clean executables: make clean
+   
 */
 #include "../headers/libraries.h"
 #include "../headers/reservations.h"
