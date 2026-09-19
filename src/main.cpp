@@ -1,11 +1,14 @@
-/*
+/* Student Resource Center
+   Project Milestone 1
 
-   //current[UPDATE: Does run]
-   compile: g++ main.cpp resources.cpp
-   execute: ./a.out ../data/resources.txt
+   current[UPDATE: This project compiles and executes]
+   compile: g++ main.cpp resources.cpp reservations.cpp reservationManager.cpp
+   execute: ./a.out ../data/resources.txt ../data/reservations.txt
 */
 #include "../headers/libraries.h"
 #include "../headers/reservations.h"
+#include "../headers/resources.h"
+#include "../headers/reservationManager.h"
 using namespace std;
 
 //user-defined fx's

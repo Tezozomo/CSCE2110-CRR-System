@@ -1,3 +1,8 @@
+/* resources functions
+
+
+*/
+
 #include "../headers/resources.h"
 using namespace std;
 
